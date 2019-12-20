@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			class User{
+				constructor(name,age) {
+				    this.name=name;
+					this.age =age;
+				}
+				
+				says(){
+					return this.name+''+this.age;
+				}
+			}
+		 class Son extends User {
+				constructor(name,age,like) {
+					super(name,age)
+					this.like=like;
+				}
+				say(){
+					return this.name+''+this.age+''+this.like;
+				}
+			
+			}
+			let son =new Son('刘',5,'篮球');
+			console.log(son.say())
+		</script>
+	</body>
+</html>

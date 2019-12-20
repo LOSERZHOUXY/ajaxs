@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			#canvas{
+				background: green;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="1000" height="1000"></canvas>
+		
+		<script type="text/javascript">
+			var canvas =document.getElementById("canvas");
+			var ca=canvas.getContext("2d");
+			ca.beginPath()
+			ca.arc(200,250,200,0,Math.PI/180*360,false)
+			ca.closePath()
+			ca.stroke()
+			ca.fillStyle='deeppink'
+			ca.fill()
+			
+			ca.beginPath()
+			ca.arc(200,250,120,0,Math.PI/180*360,false)
+			ca.closePath()
+			ca.stroke()
+			ca.fillStyle='deepskyblue'
+			ca.fill()
+			
+			
+			ca.beginPath()
+			ca.arc(800,250,200,0,Math.PI/180*360,false)
+			ca.closePath()
+			ca.stroke()
+			ca.fillStyle='deeppink'
+			ca.fill()
+			
+			ca.beginPath()
+			ca.arc(800,250,120,0,Math.PI/180*360,false)
+			ca.closePath()
+			ca.stroke()
+			ca.fillStyle='deepskyblue'
+			ca.fill()
+			
+			ca.beginPath()
+			ca.arc(500,500,300,0,Math.PI/180*360,false)
+			ca.closePath()
+			ca.fillStyle='hotpink'
+			ca.fill()
+			
+			ca.beginPath()
+			ca.strokeStyle='yellow'
+			ca.lineWidth=10;
+			ca.arc(360,430,100,0,Math.PI/180*360,false)
+			ca.closePath()
+			ca.stroke()
+			
+			ca.beginPath()
+			ca.lineWidth=10;
+			ca.strokeStyle='yellow'
+			ca.arc(630,430,100,0,Math.PI/180*360,false)
+			ca.closePath()
+			ca.stroke()
+			
+			ca.beginPath()
+			ca.lineWidth=10;
+			ca.moveTo(530,430)
+			ca.lineTo(460,430)
+			ca.stroke()
+			
+			ca.beginPath()
+			ca.lineWidth=10;
+			ca.arc(490,630,120,0,Math.PI/180*180,false)
+			ca.closePath()
+			ca.stroke()
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<input type="num" name="" id="tel" value="" />
+		<button type="button" id="btn">查询</button>
+	</head>
+	<body>
+		
+	</body>
+	<script src="js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		/* $.ajax({
+			type:"get",
+			async:false,
+			dataType:"jsonp",
+			url:'http://suggestion.baidu.com/su',
+			jsonp:"cb",
+			data:{
+				wd:'林志玲',
+				_:1576305371653
+			},
+			  success:function(data){
+				  console.log(data)
+			  }
+		}) */
+		// http://suggestion.baidu.com/su?cb=xx&wd=林志玲&_=1576305371653
+		//http://3g.163.com/touch/jsonp/joke/chanListNews/T1419316284722/2/0-10.html?callback=joke0
+		document.getElementById('btn').onclick=function(){
+			var tel = document.getElementById('tel').value;
+			tel=tel.trim();
+			jsonp({
+				url:'http://3g.163.com/touch/jsonp/joke/chanListNews/T1419316284722/2/0-10.html',
+				jsonp:'callback',
+				data:{
+					id:tel,
+					_:1576305371662
+				},
+				success:function(data){
+					console.log(data)
+				}
+			});
+		}
+		
+		function jsonp(obj){
+				
+			var fnname ='joke0';
+			obj.data=obj.data || {};
+			var s =  '';
+			for(var attr in obj.data){
+				s+='&'+attr+'='+obj.data[attr];
+			}
+			var url = obj.url+'?'+obj.jsonp+'='+fnname+s;
+			
+			var oS=document.createElement('script');
+				oS.src=url;
+			document.querySelector('head').appendChild(oS);
+			window[fnname]=function(data){
+				obj.success(data);
+				oS.remove();
+				delete window[fnname];
+			}
+		}
+		
+	</script>
+</html>

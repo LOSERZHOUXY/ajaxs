@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			/*
+				继承 ：让一个面向对象能拥有/继承另外一个面向对象的属性和方法；
+				
+					属性继承：
+					
+					
+					方法的继承：
+			
+			*/
+		   
+		   
+		   function Parent(name,age){
+			   this.name = name;
+			   this.age = age;
+			   
+		   }
+		   Parent.prototype.say = function(){
+			   
+		   }
+		   Parent.prototype.run = function(){
+		   			   
+		   }
+		   
+		   
+		    function Son(name,age){
+			   Parent.call(this,name,age);
+		    }
+		   
+		   
+		   function clone(obj){
+		   	if(typeof obj == 'object'){
+		   		var v = (obj.constructor == Array)?[]:{};
+		   		for(let attr in obj){
+		   			if(typeof obj[attr] == 'object'){
+		   				v[attr] = clone(obj[attr])
+		   			}else{
+		   				v[attr] = obj[attr];
+		   			}
+		   		}
+		   		return v;
+		   	}	
+		   }
+		   Son.prototype = clone(Parent.prototype);
+		   // Son.prototype = Parent.prototype;
+		   Son.prototype.add = function(){
+			   
+		   }
+		   var s = new Son('林志玲',44);
+		   
+		   console.log(s,Parent.prototype)
+		</script>
+	</body>
+</html>

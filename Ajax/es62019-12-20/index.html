@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			function Parent(name,age){
+				this.name=name;
+				this.age=age;
+			}
+			
+			Parent.prototype.say=function(a,b){
+				console.log(this.name,this.age,a,b)
+			}
+			var p = new Parent('王伟',20,)
+			
+			function Son(name,age){
+				Parent.call(this,name,age);
+				
+			}
+			Son.prototype=clone(Parent.prototype)
+			let s =new Son('sda',4545);
+			s.say(5,6);
+			console.log(s)
+			function clone(obj){
+				if(typeof obj =='object'){
+					var  v =obj.constructor==Array?[]:{};
+					 for(let attr in obj){
+						 if( typeof obj[attr] =='object' ){
+							 v[attr]=clone(obj[attr])
+						 }else{
+							  v[attr] =obj[attr];
+						 }
+					 }
+				
+				}
+					return v;
+			}
+		</script>
+	</body>
+</html>

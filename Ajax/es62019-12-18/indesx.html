@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		
+		
+		<script type="text/javascript">
+			let a =(b,f,g,j,s=5)=>b+s;
+			console.log(a(5));
+			
+			let b= {
+				c:()=>{
+					console.log(this);
+				},
+				d:function(){
+					console.log(this)
+					let j =(ax)=>{
+						console.log(ax)
+					}
+					return j;
+				},
+				say(){
+					console.log(this)
+					let g=(sd)=>{
+						console.log(sd)
+					}
+					return g;
+				}
+			}
+					b.c()
+					b.d()(5);
+					b.say()(5)
+					
+					function promise(){
+						var a = new Promise(function(resolve,reject){
+						
+					});
+					}
+					
+		</script>
+	</body>
+</html>

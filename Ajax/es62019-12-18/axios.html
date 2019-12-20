@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	<input type="tetx" name="" id="" value="" />
+	<button type="button">提交</button>
+		<script type="text/javascript">
+			document.querySelector('button').onclick=function(){
+				var value = document.querySelector('input').value;
+				axios({
+					url: './js/ajax.php?user='+value,
+					method: 'get'
+				}).then((response)=>{
+						var json =(new Function('','return'+response))();
+						console.log(json)
+				})
+			}
+			
+			
+			function axios(obj) {
+				return new Promise(function(resolve, reject) {
+					if (obj.method.toLocaleLowerCase() == 'get') {
+						var axios = new XMLHttpRequest();
+						axios.open('get', obj.url, true);
+						axios.send();
+					} else if (obj.method.toLocaleLowerCase() == 'post') {
+						var axios = new XMLHttpRequest();
+						axios.open('post', obj.url, true);
+						axios.setRequestHeader('content -type', 'application/x-www-form-urlencoded');
+						axios.send(obj.body);
+					}
+					axios.onreadystatechange = function() {
+						if (axios.readyState == 4) {
+							if (axios.status >= 200 && axios.status <=207) {
+								resolve(axios.responseText)
+							} else {
+								reject(axios.status)
+							}
+						}
+					}
+				});
+			}
+			
+			
+		</script>
+	</body>
+</html>

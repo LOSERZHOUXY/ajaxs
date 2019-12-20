@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		
+		<script type="text/javascript">
+			(function(){
+				window.$=window.jQuery=function(selector){
+				return  new Zxy(selector);
+			}
+			function Zxy(selector){
+				if(selector.nodeType==1){
+					
+					this.length=0;
+					this[0]=selector;
+				}else{
+					let els =document.querySelectorAll(selector);
+					for(let i=0;i<els.length;i++){
+						this[i]=els[i];
+					}
+					this.length=els.length;
+				}
+			}
+			
+			Zxy.prototype.css=function(obj){
+				for(let i =0;i<this.length;i++){
+					for(let attr in obj){
+						this[i].style[attr] =obj[attr];
+					}
+				}
+				return this;
+			}
+			Zxy.prototype.get=function(num){
+				return this[num];
+			}
+			Zxy.prototype.eq=function(num){
+				let el = this[num];
+				for(var i=0;i<this.length;i++){
+					delete this[i];
+				}	
+				this[0] = el;
+				this.length = 1;
+				return this;
+			}
+			})()
+			
+			/* $('ul li').css({
+				background:'red',
+				color:'#fff'
+			}) */
+		
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			.box,
+			.box1 {
+				height: 200px;
+				width: 200px;
+				border: 1px solid #000;
+			}
+
+			.box button,
+			.box1 button {
+				width: 33.3333333333%;
+				height: 30px;
+				float: left;
+			}
+
+			.box div,
+			.box1 div {
+				display: none;
+				line-height: 170px;
+				text-align: center;
+			}
+
+			.box .active,
+			.box1 .active {
+				background: goldenrod;
+			}
+
+			.box .show,
+			.box1 .show {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<button class="active">btn1</button>
+			<button>btn2</button>
+			<button>btn3</button>
+			<div class="show">111</div>
+			<div>222</div>
+			<div>333</div>
+		</div>
+		<div class="box1">
+			<button class="active">btn1</button>
+			<button>btn2</button>
+			<button>btn3</button>
+			<div class="show">111</div>
+			<div>222</div>
+			<div>333</div>
+		</div>
+		<script type="text/javascript">
+			function Tab(el) {
+				this.box = document.querySelector(el);
+				this.btns = this.box.querySelectorAll('button');
+				this.divs = this.box.querySelectorAll('div');
+				this.timer = null;
+				this.num = 0;
+			}
+			Tab.prototype.tabplan = function() {
+				let that = this;
+				for (let i = 0; i < this.btns.length; i++) {
+					this.btns[i].onclick = function() {
+						for (let j = 0; j < that.btns.length; j++) {
+							that.btns[j].className = '';
+							that.divs[j].className = '';
+						}
+						that.divs[i].className = 'show';
+						this.className = 'active';
+					}
+				}
+			}
+			Tab.prototype.autoPlay = function() {
+				this.timer = setInterval(() => {
+					this.num++;
+					this.num = this.num % this.btns.length;
+					for (let i = 0; i < this.btns.length; i++) {
+						for (let j = 0; j < this.btns.length; j++) {
+							this.btns[j].className = '';
+							this.divs[j].className = '';
+						}
+						this.divs[this.num].className = 'show';
+						this.btns[this.num].className = 'active';
+					}
+				}, 1000);
+			}
+			Tab.prototype.toggle=function(){
+				var that =this;
+				this.box.onmouseenter=function(){
+					clearInterval(that.timer);
+				}
+				this.box.onmouseleave=function(){
+					that.autoPlay();
+				} 
+			}
+			var tab1 = new Tab('.box');
+			tab1.tabplan()
+			tab1.autoPlay()
+			tab1.toggle()
+		</script>
+	</body>
+</html>

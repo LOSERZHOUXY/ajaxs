@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="text" name="" id="" value="" /><button type="button">百度一下</button>
+		<ul style="display: none;">
+			<li></li>
+		</ul>
+		<script src="js/jquery-1.11.1.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+				$('input').on('input',function(){
+					var _this = this.value;
+					if(!_this.trim()){
+						$('ul').css({
+							display:'none'
+						})
+						return;
+					}
+					//http://3g.163.com/touch/jsonp/joke/chanListNews/T1419316284722/2/0-10.html?callback=mkjmj
+					$.ajax({
+						type:"get",
+						async:false,
+						dataType:"jsonp",
+						url:'https://api.asilu.com/fanyi/',
+						jsonp:"callback",
+						data:{
+							//wd:_this,
+							q:_this,
+							_:1576305371663
+						},/*  */
+						  success:function(data){
+							  $('ul').html(' ')
+							   //for(var  i = 0;i<data['段子'].length;i++){
+								    var li =$(`<li>${data.data}</li>`);
+								   
+								   $('ul').append(li);
+								   $('ul').css({
+									   display:'block'
+								   }) /**/
+								   console.log(data)
+								   //document.writeln()
+							 // } 
+							 
+						  }
+					})
+					
+				});
+		</script>
+	</body>
+</html>

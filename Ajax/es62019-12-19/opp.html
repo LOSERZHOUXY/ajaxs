@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+		/* 	let obj={
+				say:(obj,cb)=>{
+					for(let attr in obj){
+						let str =obj.name+'是个'+obj.sex+'人'+'今年'+obj.age+'岁';
+						cb(str)
+					}
+					
+				}
+			}
+			obj.say({name:'刘欢',age:'55',sex:'女'},function(an){	
+				console.log(an)
+			});
+			
+			function factory(){
+				let obk={
+					talk:(name,things,cb)=>{
+						let sr ='';
+						for(let i =0;i<10;i++){
+							sr +=name+''+things
+						}
+						cb(sr)
+					}
+				}
+				return obk;
+			}
+			var fa =factory();
+			fa.talk('刘欢','赔笔',function(data){
+				console.log(data+'  ')
+			}) */ 
+		
+			function Person(name,age){
+				this.name =name;
+				this.age =age;
+				
+			
+				
+			}
+			
+			/* Person.prototype.con=(name,age)=>{
+				console.log(age,name)
+			}
+			let p2=new Person();
+			p2.con() */
+			 Person.prototype.each=(arr,cab)=>{
+				 for(let i =0;i<arr.length;i++){
+					cab(arr[i],i)
+				} 
+				}
+			
+			let p1=new Person();
+			let arr=[9,5,5,88521];
+			p1.each(arr,function(data,i){
+				console.log(data,i)
+			})
+			
+		</script>
+	</body>
+</html>

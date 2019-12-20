@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			#canvas{
+				background: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<canvas id="canvas" width="800" height="800"></canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById('canvas');
+			var ca =canvas.getContext('2d');
+			//表盘
+			ca.beginPath();
+			ca.lineWidth=2;
+			ca.arc(400,400,360,Math.PI/180*0,Math.PI/180*360,false)
+			ca.closePath();
+			ca.stroke()
+			//刻度
+			ca.beginPath();
+			ca.lineWidth=2;
+			 for(var i =0;i<=60;i++){
+				ca.moveTo(400,400)
+				ca.arc(400,400,360,6 * i * Math.PI / 180, 6 * (i + 1) * Math.PI / 180,false)
+				
+			} 
+			ca.closePath();
+			ca.stroke()
+			//清空中心
+			ca.beginPath();
+			ca.fillStyle='#fff';
+			ca.lineWidth=2;
+			ca.arc(400,400,340,Math.PI/180*0,Math.PI/180*360,false)
+			ca.closePath();
+			ca.fill()
+			//画时针刻度
+			ca.beginPath();
+			ca.lineWidth=6;
+			 for(var i =0;i<=12;i++){
+				ca.moveTo(400,400)
+				ca.arc(400,400,360,30 * i * Math.PI / 180, 30 * (i + 1) * Math.PI / 180,false)
+				
+			} 
+			ca.closePath();
+			ca.stroke()
+			//清空中心
+			ca.beginPath();
+			ca.fillStyle='#fff';
+			ca.lineWidth=2;
+			ca.arc(400,400,330,Math.PI/180*0,Math.PI/180*360,false)
+			ca.closePath();
+			ca.fill()
+			
+			time();
+			function time(){
+				//清空中心
+				ca.beginPath();
+				ca.fillStyle='#fff';
+				ca.lineWidth=2;
+				ca.arc(400,400,330,Math.PI/180*0,Math.PI/180*360,false)
+				ca.closePath();
+				ca.fill()
+				//圆心
+				ca.beginPath();
+				ca.fillStyle='#000';
+				ca.lineWidth=2;
+				ca.arc(400,400,10,Math.PI/180*0,Math.PI/180*360,false)
+				ca.closePath();
+				ca.fill();
+				
+				//获取时间
+				var date = new Date();
+				var h = date.getHours();
+				var m =date.getMinutes();
+				var s=date.getSeconds();
+				console.log(h,m,s)
+				
+				//画秒针
+				ca.beginPath();
+				ca.lineWidth=2;
+				ca.moveTo(400,400)
+				ca.arc(400,400,310, (s*6-90 )* Math.PI / 180, (s*6-90 ) * Math.PI / 180,false)
+				ca.closePath();
+				ca.stroke()
+				//画分针
+				ca.beginPath();
+				ca.lineWidth=5;
+				ca.moveTo(400,400)
+				ca.arc(400,400,310, (m*6-90 )* Math.PI / 180, (m*6-90 ) * Math.PI / 180,false)
+				ca.closePath();
+				ca.stroke()
+				//画时针
+				ca.beginPath();
+				ca.lineWidth=8;
+				ca.moveTo(400,400)
+				ca.arc(400,400,250, (h*30-90 )* Math.PI / 180, (h*30-90 ) * Math.PI / 180,false)
+				ca.closePath();
+				ca.stroke()
+				
+				
+			}
+			setInterval(function(){
+				time();
+			},1000)
+		</script>
+	</body>
+</html>

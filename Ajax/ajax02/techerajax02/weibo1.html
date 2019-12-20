@@ -1,0 +1,384 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<link href="style/weibo.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+</head>
+<body>
+	
+	<script type="text/javascript">
+		
+		// $(function(){
+			
+		// })
+		
+		$(document).ready(function(){
+			
+			var btn = $('#btn1');
+			var text = $('#tijiaoText');
+			var box = $('#div1');
+			var page = $('.page');
+			
+			
+			// 获取hash值
+			var hash = window.location.hash;
+			if(hash){
+				hash = hash.split('=')[1];
+			}else{
+				window.location.hash = 'pages=1';
+				hash = 1;
+			}
+			
+			console.log(hash)
+			
+			//获取一页的数据,插入到页面
+			
+			/*
+				封装一个获取第几页的数据，并且渲染到页面
+			
+			*/
+			function renderPage(num){
+				$.ajax({
+					url:'./php/weibo.php?act=get&page='+num,
+					success:function(data){
+						
+						var arr = (new Function('','return'+data))();
+						
+						//先把内容清空
+						box.html('');						
+						for(var i=0;i<arr.length;i++){
+							var div = createDiv(arr[i].content,arr[i].acc,arr[i].ref,arr[i].id,arr[i].time);
+							box.append(div);
+						}
+					}
+				})
+			}
+			
+			renderPage(hash);
+			
+			btn.on('click',function(){
+				
+				var val = text.val();
+				if(val.trim()){ // 判断输入框里面是否有内容
+					
+					// 把数据传输给后台
+					$.ajax({
+						url:'./php/weibo.php?act=add&content='+val,
+						dataType:'json',
+						success:function(data){
+						
+							if(data.error == 0){
+								// var div = createDiv(val,0,0,data.id,data.time);
+								
+								// box.prepend(div);
+								renderPage(1);
+								
+								hash = 1;
+								window.location.hash = 'pages=1';
+								setPage();
+								//清空输入框
+								text.val('');
+								
+							}
+						}
+					})
+					
+					
+				}else{
+					alert('亲，请留下足迹')
+				}								
+			})
+			
+			
+			
+			//分页
+			setPage();
+			function setPage(){
+				
+				
+				$.ajax({
+					url:'./php/weibo.php?act=get_page_count',
+					success:function(data){
+						page.html('');	
+						var json = (new Function('','return'+data))();
+						console.log(json,hash)
+						
+						/*
+						
+							如果页数大于10页，就只显示10页，
+							小于10页，有多少显示多少
+							
+							
+									hash = 6
+									
+								2345   6   789 10 11	
+								12
+									hash+5
+						
+						*/
+					   
+					   if(json.count>10){
+						   
+						   if(hash<=5){
+							   for(var i=0;i<10;i++){
+									var oA = $('<a href="javascript:;">'+(1+i)+'</a>');
+									if(hash-1 == i){
+										oA.addClass('active');
+									}
+									oA.on('click',function(){
+										renderPage(this.innerHTML);
+										hash = this.innerHTML;
+										window.location.hash = 'pages='+this.innerHTML;
+										
+										$(this).addClass('active').siblings('a').removeClass('active');
+										setPage();
+									})
+									
+									page.append(oA);
+								}
+						   }else if(hash>5&&(parseFloat(hash)+5<=json.count)){
+							   
+							   for(var i=(hash-4);i<parseFloat(hash)+5;i++){
+									var oA = $('<a href="javascript:;">'+(1+i)+'</a>');
+									if(hash-1 == i){
+										oA.addClass('active');
+									}
+									oA.on('click',function(){
+										renderPage(this.innerHTML);
+										hash = this.innerHTML;
+										window.location.hash = 'pages='+this.innerHTML;
+										
+										$(this).addClass('active').siblings('a').removeClass('active');
+										setPage();
+									})
+									
+									page.append(oA);
+								}
+							   
+						   }else if(hash>5&&(parseFloat(hash)+5>json.count)){
+							   for(var i=(hash-4);i<json.count;i++){
+									var oA = $('<a href="javascript:;">'+(1+i)+'</a>');
+									if(hash-1 == i){
+										oA.addClass('active');
+									}
+									oA.on('click',function(){
+										renderPage(this.innerHTML);
+										hash = this.innerHTML;
+										window.location.hash = 'pages='+this.innerHTML;
+										setPage();
+										$(this).addClass('active').siblings('a').removeClass('active');
+									})
+									
+									page.append(oA);
+								}
+							   
+						   }else if(hash<5){
+							   for(var i=0;i<10;i++){
+									var oA = $('<a href="javascript:;">'+(1+i)+'</a>');
+									if(hash-1 == i){
+										oA.addClass('active');
+									}
+									oA.on('click',function(){
+										renderPage(this.innerHTML);
+										hash = this.innerHTML;
+										window.location.hash = 'pages='+this.innerHTML;
+										setPage();
+										$(this).addClass('active').siblings('a').removeClass('active');
+									})
+									
+									page.append(oA);
+								}
+							   
+						   }
+						   
+						   
+					   }else if(json.count<10&&json.count>0){
+						   for(var i=0;i<json.count;i++){
+								var oA = $('<a href="javascript:;">'+(1+i)+'</a>');
+								if(hash-1 == i){
+									oA.addClass('active');
+								}
+								oA.on('click',function(){
+									renderPage(this.innerHTML);
+									hash = this.innerHTML;
+									window.location.hash = 'pages='+this.innerHTML;
+									setPage();
+									$(this).addClass('active').siblings('a').removeClass('active');
+								})
+								
+								page.append(oA);
+							}
+						   
+						   
+					   }
+					   
+						
+						
+						
+					}
+				})
+				
+			}
+			
+			
+			
+			
+			// 封装一个结构模板的函数
+			function createDiv(content,acc,ref,id,time){
+				
+				var div = $('<div class="reply" id_num="'+id+'">');
+				div.html(`
+							<p class="replyContent">${content}</p>
+							<p class="operation">
+								<span class="replyTime">${getTime(time)}</span>
+								<span class="handle">
+									<a href="javascript:;" class="top">${acc}</a>
+									<a href="javascript:;" class="down_icon">${ref}</a>
+									<a href="javascript:;" class="cut">删除</a>
+								</span>
+							</p>`);
+				
+				
+				// 点赞
+				var good = div.find('.top');
+				good.on('click',function(){
+					var id = $(this).parents('.reply').attr('id_num');
+					var that = this;
+					$.ajax({
+						url:'./php/weibo.php?act=acc&id='+parseInt(id),
+						success:function(data){
+							var json = (new Function('','return'+data))();
+							if(json.error == 0){
+								
+								$(that).html(parseInt($(that).html())+1);
+							}
+						}
+					})
+					
+				})
+				
+				
+				// 踩
+				var down_icon = div.find('.down_icon');
+				down_icon.on('click',function(){
+					var id = $(this).parents('.reply').attr('id_num');
+					var that = this;
+					$.ajax({
+						url:'./php/weibo.php?act=ref&id='+parseInt(id),
+						success:function(data){
+							var json = (new Function('','return'+data))();
+							if(json.error == 0){
+								
+								$(that).html(parseInt($(that).html())+1);
+							}
+						}
+					})
+				})
+					
+					
+				// 删除
+					
+				var cut = div.find('.cut');
+				cut.on('click',function(){
+					
+					var id = $(this).parents('.reply').attr('id_num');
+					var that = this;
+					$.ajax({
+						url:'./php/weibo.php?act=del&id='+parseInt(id),
+						success:function(data){
+							var json = (new Function('','return'+data))();
+							
+							if(json.error == 0){
+								renderPage(hash);
+								setPage();
+							}
+						}
+					})
+					
+				})
+							
+				return div;		
+			}
+			
+			// 封装一个时间的函数
+			function getTime(time){
+				
+				time = time*1000;
+				var date = new Date(time);
+				var y = toTime(date.getFullYear());
+				var mon = toTime(date.getMonth()+1);
+				var d = toTime(date.getDate());
+				var h = toTime(date.getHours());
+				var min = toTime(date.getMinutes());
+				var s = toTime(date.getSeconds());
+				
+				//2017-02-06 16:37:60
+				
+				var str = ''+y+'-'+mon+'-'+d+' '+h+':'+min+':'+s;
+				
+				return str;
+			}
+			
+			function toTime(n){
+				return n>9?n:'0'+n;
+			}
+			
+		})
+		
+		
+		
+		
+		
+		/*
+		
+			环境变量 ：
+			
+			
+			%SystemRoot%\system32;
+			%SystemRoot%;
+			%SystemRoot%\System32\Wbem;
+			%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;
+			C:\Program Files (x86)\Windows Live\Shared;
+			D:\node\;
+			C:\Program Files\TortoiseSVN\bin
+		
+		
+		*/
+	</script>
+<div class="znsArea">
+<!--留言-->
+     <div class="takeComment">
+        <textarea name="textarea" class="takeTextField" id="tijiaoText"></textarea>
+        <div class="takeSbmComment">
+            <input type="button" id="btn1" class="inputs" value="" />
+            <span>(可按 Enter 回复)</span>
+        </div>
+    </div>
+<!--已留-->
+    <div class="commentOn">
+        <div class="messList" id="div1" style="height:502px">
+        	<!-- <div class="reply">
+                <p class="replyContent">卫士，新款卫士将推出总共14种车身式样。其中， XS旅行款车型售价为32295英镑(约33.6万元)。</p>
+                <p class="operation">
+                    <span class="replyTime">2017-02-6 16:37:60</span>
+                    <span class="handle">
+                    	<a href="javascript:;" class="top">0</a>
+                        <a href="javascript:;" class="down_icon">0</a>
+                        <a href="javascript:;" class="cut">删除</a>
+                    </span>
+                </p>
+            </div> -->
+			
+        </div>
+        <div class="page">
+        	<!-- <a href="javascript:;" class="active">1</a>
+        	<a href="javascript:;">2</a>
+        	<a href="javascript:;">3</a> -->
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			#canvas{
+				
+				margin-left: 500px;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="120" height="30"></canvas>
+		
+		<script type="text/javascript">
+				
+				var str='1sd2'
+				verificationCode(str,'img/bg.jpg')
+				function verificationCode(str,imgSrc){
+					console.log(imgSrc)
+					//if(!str || !imgSrc){
+					var ca=document.getElementById('canvas').getContext('2d');
+					var str =str.split('');
+					var oImg =new Image();
+					oImg.src=imgSrc;
+					oImg.onload=function(){
+						ca.beginPath()
+						ca.drawImage(oImg,0,0,120,100)
+						ca.closePath()
+						
+						ca.beginPath()
+						for(var i=0;i<100;i++){
+							ca.arc(Math.floor(Math.random()*120+1),Math.floor(Math.random()*30+1),Math.floor(Math.random()*15+1),Math.PI/180*0,Math.PI/180*360,false)
+						}
+						ca.closePath()
+						
+						ca.font='italic 20px smll-caps';
+						ca.fillStyle=color();
+						ca.beginPath();
+						ca.fillText(str[0],10,25)
+						ca.closePath()
+						
+						ca.font='italic 20px smll-caps';
+						ca.fillStyle=color();
+						ca.beginPath();
+						ca.fillText(str[1],40,25)
+						ca.closePath()
+						
+						ca.font='italic 20px smll-caps';
+						ca.fillStyle=color();
+						ca.beginPath();
+						ca.fillText(str[2],70,25)
+						ca.closePath()
+						
+						ca.font='italic 20px smll-caps';
+						ca.fillStyle=color();
+						ca.beginPath();
+						ca.fillText(str[3],100,25)
+						ca.closePath()
+						
+						
+					}
+					console.log(str)
+					//}else{
+						
+						
+						
+					//}
+					 function color(){
+							var color ='rgb('+Math.floor(Math.random()*255+1) +','+Math.floor(Math.random()*255+1) +','+ Math.floor(Math.random()*255+1) +')';
+						return color;
+					 }
+					function bgcolor(){
+							var color ='rgba('+Math.floor(Math.random()*255+1) +','+Math.floor(Math.random()*255+1) +','+ Math.floor(Math.random()*255+1) +','+Math.floor(Math.random()*10) +')';
+						return color;
+					}
+				}
+			
+		</script>
+	</body>
+</html>
